@@ -1,5 +1,6 @@
 import Handler from '../abstract/Handler.js';
 import * as THREE from 'three';
+import Water from '../components/Water/Water.js';
 
 export default class World extends Handler {
   static instance;
@@ -10,8 +11,11 @@ export default class World extends Handler {
     super(World.id);
 
     this.scene = this.experience.scene;
+    this.debug = this.experience.debug;
+    this.resources = this.experience.resources;
 
-    this.createCube();
+    this._setupWater();
+    // this._setupLight();
   }
 
   static getInstance() {
@@ -22,16 +26,23 @@ export default class World extends Handler {
     return World.instance;
   }
 
-  createCube() {
-    const geometry = new THREE.BoxGeometry(1, 1, 1);
-    const material = new THREE.MeshNormalMaterial();
-    const cube = new THREE.Mesh(geometry, material);
-    this.scene.add(cube);
+  _setupWater() {
+    this.water = new Water(this.experience);
+  }
+
+  _setupLight() {
+    const texture = this.resources.items.hdri.hdri;
+    texture.mapping = THREE.EquirectangularReflectionMapping;
+    this.scene.environment = texture;
+    this.scene.environmentIntensity = 0.7;
+    this.scene.background = texture;
   }
 
   resize() { }
 
-  update(state) { }
+  update(state) {
+    if (this.water) this.water.update(state.time);
+  }
 
   dispose() { }
 }

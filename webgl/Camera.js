@@ -43,7 +43,7 @@ export default class Camera extends Handler {
 
   _setupCamera() {
     this.target = new THREE.PerspectiveCamera(this.options.fov, this.options.aspect, this.options.near, this.options.frustrum);
-    this.target.position.set(0, 0, this.options.z);
+    this.target.position.set(0, 3, this.options.z);
     this.scene.add(this.target);
     this.resize();
   }

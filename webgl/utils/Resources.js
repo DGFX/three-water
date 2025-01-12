@@ -3,6 +3,7 @@ import { EventEmitter } from 'events';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader.js';
 import { FontLoader } from 'three/examples/jsm/loaders/FontLoader.js';
+import { RGBELoader } from 'three/examples/jsm/loaders/RGBELoader.js';
 
 export default class Resources extends EventEmitter {
 
@@ -44,6 +45,8 @@ export default class Resources extends EventEmitter {
     this.loaders.dracoLoader.setDecoderPath('/draco/');
     this.loaders.gltfLoader.setDRACOLoader(this.loaders.dracoLoader);
 
+    this.loaders.hdriLoader = new RGBELoader();
+
     this.loaders.textureLoader = new THREE.TextureLoader(this.loadingManager);
     this.loaders.cubeTextureLoader = new THREE.CubeTextureLoader(
       this.loadingManager
@@ -66,6 +69,10 @@ export default class Resources extends EventEmitter {
         this.loaders.cubeTextureLoader.load(asset.path, (file) => {
           this._singleAssetLoaded(asset, file);
         });
+      } else if (asset.type === 'hdri') {
+          this.loaders.hdriLoader.load(asset.path, (buffer) => {
+            this._singleAssetLoaded(asset, buffer);
+          });
       } else if (asset.type === 'audio') {
         this.loaders.audioLoader.load(asset.path, (buffer) => {
           this._singleAssetLoaded(asset, buffer);
