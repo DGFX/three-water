@@ -8,12 +8,12 @@ export default class Water {
         this.scene = this.experience.scene
         this.debug = this.experience.debug;
 
-        this._setupProperties();
+        this._setupColors();
         this._setupWater();
         this._setupDebug();
     }
 
-    _setupProperties() {
+    _setupColors() {
         this.colors = {
             depthColor: '#19628f',
             surfaceColor: '#8ac2ff',
@@ -25,20 +25,21 @@ export default class Water {
             uTime: { value: 0 },
             uColor: { value: new THREE.Color('#118c9c') },
 
-            uBigWavesElevation: { value: 0.04 },
-            uBigWavesFrequency: { value: new THREE.Vector2(4.8, 3) },
+            uBigWavesElevation: { value: 0.013 },
+            uBigWavesFrequency: { value: new THREE.Vector2(10, 7) },
             uBigWavesSpeed: { value: 0.75 },
 
-            uSmallWavesElevation: { value: 0.05 },
+            uTiling: { value: 1.6 },
+
+            uSmallWavesElevation: { value: 0.035 },
             uSmallWavesFrequency: { value: 7.8 },
-            uSmallWavesSpeed: { value: 0.3 },
-            uSmallWavesIterations: { value: 4 },
+            uSmallWavesSpeed: { value: 0.4 },
+            uSmallWavesIterations: { value: 5 },
 
             uDepthColor: { value: new THREE.Color(this.colors.depthColor) },
             uSurfaceColor: { value: new THREE.Color(this.colors.surfaceColor) },
-            uColorOffset: { value: 0.06 },
-            uColorMultiplier: { value: 5 },
-
+            uColorOffset: { value: 0.04 },
+            uColorMultiplier: { value: 6.7 },
         };
 
         this.material = new THREE.ShaderMaterial({
@@ -67,12 +68,14 @@ export default class Water {
 
         this.vertexDebugFolder = this.debug.gui.addFolder('Water Vertex');
         this.vertexDebugFolder.add(this.uniforms.uBigWavesElevation, 'value', 0, 1, 0.001).name('uBigWavesElevation');
-        this.vertexDebugFolder.add(this.uniforms.uBigWavesFrequency.value, 'x', 0, 10, 0.001).name('uBigWavesFrequencyX');
-        this.vertexDebugFolder.add(this.uniforms.uBigWavesFrequency.value, 'y', 0, 10, 0.001).name('uBigWavesFrequencyY');
+        this.vertexDebugFolder.add(this.uniforms.uBigWavesFrequency.value, 'x', 0, 100, 0.001).name('uBigWavesFrequencyX');
+        this.vertexDebugFolder.add(this.uniforms.uBigWavesFrequency.value, 'y', 0, 100, 0.001).name('uBigWavesFrequencyY');
         this.vertexDebugFolder.add(this.uniforms.uBigWavesSpeed, 'value', 0, 10, 0.001).step(0.001).name('uBigWavesSpeed');
 
+        this.vertexDebugFolder.add(this.uniforms.uTiling, 'value', 0, 10, 0.001).name('uTiling');
+
         this.vertexDebugFolder.add(this.uniforms.uSmallWavesElevation, 'value', 0, 1, 0.001).name('uSmallWavesElevation');
-        this.vertexDebugFolder.add(this.uniforms.uSmallWavesFrequency, 'value', 0, 10, 0.001).name('uSmallWavesFrequency');
+        this.vertexDebugFolder.add(this.uniforms.uSmallWavesFrequency, 'value', 0, 100, 0.001).name('uSmallWavesFrequency');
         this.vertexDebugFolder.add(this.uniforms.uSmallWavesSpeed, 'value', 0, 10, 0.001).name('uSmallWavesSpeed');
         this.vertexDebugFolder.add(this.uniforms.uSmallWavesIterations, 'value', 0, 10, 0.001).name('uSmallWavesIterations');
 

@@ -1,3 +1,5 @@
+#define NUM_OCTAVES 5
+
 varying vec2 vUv;
 varying float vElevation;
 
@@ -6,6 +8,8 @@ uniform float uTime;
 uniform float uBigWavesElevation;
 uniform vec2 uBigWavesFrequency;
 uniform float uBigWavesSpeed;
+
+uniform float uTiling;
 
 uniform float uSmallWavesElevation;
 uniform float uSmallWavesFrequency;
@@ -98,12 +102,14 @@ float cnoise(vec3 P)
 }
 
 void main() {
-    vUv = uv;
+    vUv = uv * 4.;
 
-	vec4 modelPosition = modelMatrix * vec4(position, 1.0);
+	vec4 modelPosition = modelMatrix * vec4(position, 1.0) * uTiling;
 
-	float elevation = sin(modelPosition.x * uBigWavesFrequency.x + uTime * uBigWavesSpeed) *
-					  sin(modelPosition.z * uBigWavesFrequency.y + uTime * uBigWavesSpeed) *
+	float elevation = sin(modelPosition.x * uBigWavesFrequency.x * 0.78 + uTime * uBigWavesSpeed) *
+					  sin(modelPosition.x * uBigWavesFrequency.x * 1.2 + uTime * uBigWavesSpeed) *
+					  sin(modelPosition.z * uBigWavesFrequency.y * 2.2 + uTime * uBigWavesSpeed) *
+					  sin(modelPosition.z * uBigWavesFrequency.y * 3.1 + uTime * uBigWavesSpeed) *
 					  uBigWavesElevation;
 
 
